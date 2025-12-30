@@ -8,6 +8,9 @@ import fs from "fs";
 const app = express();
 const port = process.env.PORT || 4000;
 
+// Base URL for images - use environment variable or default to localhost
+const BASE_URL = process.env.BASE_URL || `http://localhost:5001`;
+
 app.use(cors());
 app.use(express.json());
 app.use('/images', express.static('images')); 
@@ -18,10 +21,10 @@ app.get('/', (req, res) => {
 
 // create MYSQL connection 
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "car",
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "",
+  database: process.env.DB_NAME || "car",
 });
 
 // Connect to database
@@ -85,7 +88,7 @@ app.get("/cars", (req, res) => {
     if (err) return res.json(err);
     
     for (const d of data) {
-      d.img = `http://localhost:5001/images/${d.img}`;
+      d.img = `${BASE_URL}/images/${d.img}`;
     }
     
     res.json(data);
