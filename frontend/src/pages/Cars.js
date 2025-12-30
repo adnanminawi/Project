@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../config";
 import CarCard from "../components/CarCard";
 import Upper from "../components/Upper";
 import Footer from "../components/Footer";
@@ -16,7 +17,7 @@ function Cars() {
   useEffect(() => {
     const fetchAllCars = async () => {
       try {
-        const res = await axios.get("http://localhost:5001/cars");
+        const res = await axios.get(`${API_URL}/cars`);
         setCars(res.data);
         setDriverSelected(res.data.map(() => false));
       } catch (err) {
@@ -39,10 +40,10 @@ function Cars() {
   const handleDelete = async (carId) => {
     if (window.confirm("Are you sure you want to delete this car?")) {
       try {
-        await axios.delete(`http://localhost:5001/cars/${carId}`);
+        await axios.delete(`${API_URL}/cars/${carId}`);
         alert("Car deleted successfully!");
         // Refresh the cars list
-        const res = await axios.get("http://localhost:5001/cars");
+        const res = await axios.get(`${API_URL}/cars`);
         setCars(res.data);
         setDriverSelected(res.data.map(() => false));
       } catch (err) {

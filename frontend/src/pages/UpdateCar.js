@@ -1,7 +1,9 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import API_URL from "../config";
 import '../styles/UpdateCar.css';
+
 const UpdateCar = () => {
   const [name, setName] = useState('');
   const [descrp, setDescrp] = useState('');
@@ -15,9 +17,8 @@ const UpdateCar = () => {
  
   // Fetching one record from cars table 
   useEffect(() => {
-    axios.get('http://localhost:5001/cars/' + id)  
+    axios.get(`${API_URL}/cars/${id}`)  
       .then(res => {
-        console.log("Fetched car data:", res.data);
         setName(res.data.name);          
         setDescrp(res.data.descrp);      
         setPriceday(res.data.priceday);  
@@ -34,7 +35,7 @@ const UpdateCar = () => {
     e.preventDefault();
      
     try {
-      await axios.put(`http://localhost:5001/cars/${id}`, {  
+      await axios.put(`${API_URL}/cars/${id}`, {  
         name, 
         descrp, 
         priceday,   
@@ -102,4 +103,4 @@ const UpdateCar = () => {
   );
 };
 
-export default UpdateCar;  
+export default UpdateCar;

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import API_URL from "../config";
 
 const AddCar = () => {
   const [car, setCar] = useState({
@@ -51,8 +52,7 @@ const AddCar = () => {
     formdata.append('image', file);
 
     try {
-
-      await axios.post("http://localhost:5001/cars", formdata);
+      await axios.post(`${API_URL}/cars`, formdata);
       navigate("/cars");
     } catch (err) {
       console.log(err);

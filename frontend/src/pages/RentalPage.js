@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import API_URL from "../config";
 import "../styles/RentalPage.css";
 
 function RentalPage() {
@@ -14,14 +15,12 @@ function RentalPage() {
   const fetchRentals = async () => {
     try {
       setLoading(true);
-      console.log("Fetching rentals..."); // Debug
-      const res = await axios.get("http://localhost:5001/rentals");
-      console.log("Response received:", res.data); // Debug
+      const res = await axios.get(`${API_URL}/rentals`);
       setRents(res.data);
     } catch (err) {
-      console.error("Error details:", err); // Debug
-      console.error("Error response:", err.response?.data); // Debug
-      console.error("Error message:", err.message); // Debug
+      console.error("Error details:", err);
+      console.error("Error response:", err.response?.data);
+      console.error("Error message:", err.message);
       alert("Failed to load rentals: " + (err.response?.data?.error || err.message));
     } finally {
       setLoading(false);
@@ -34,7 +33,7 @@ function RentalPage() {
     if (!window.confirm("Are you sure you want to delete this rental?")) return;
 
     try {
-      await axios.delete(`http://localhost:5001/rentals/${id}`);
+      await axios.delete(`${API_URL}/rentals/${id}`);
       setRents(rents.filter(r => r.id !== id));
     } catch (err) {
       console.error(err);
@@ -47,7 +46,7 @@ function RentalPage() {
     if (!window.confirm("Are you sure you want to delete all rentals?")) return;
 
     try {
-      await axios.delete("http://localhost:5001/rentals");
+      await axios.delete(`${API_URL}/rentals`);
       setRents([]);
     } catch (err) {
       console.error(err);
@@ -96,7 +95,7 @@ function RentalPage() {
               {rents.map(r => (
                 <tr key={r.id}>
                   <td>{new Date(r.created_at).toLocaleDateString()}</td>
-                  <td>{r.name}</td>
+                  <td>{r.customer_name}</td>
                   <td>{r.car_name}</td>
                   <td>{new Date(r.start_date).toLocaleDateString()}</td>
                   <td>{new Date(r.end_date).toLocaleDateString()}</td>
