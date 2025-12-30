@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import API_URL from "../config";
 import "../styles/Rent.css";
 
 function Rent() {
@@ -90,8 +89,10 @@ function Rent() {
       total: calculateTotal()
     };
 
+    console.log("Submitting rental data:", data);
+
     try {
-      await axios.post(`${API_URL}/rentals`, data);
+      await axios.post("http://localhost:5001/rentals", data);
       alert("Rental saved successfully!");
       
       setRentData({

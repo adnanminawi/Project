@@ -8,9 +8,6 @@ import fs from "fs";
 const app = express();
 const port = process.env.PORT || 4000;
 
-// Base URL for images - use environment variable or default to localhost
-const BASE_URL = process.env.BASE_URL || `http://localhost:5001`;
-
 app.use(cors());
 app.use(express.json());
 app.use('/images', express.static('images')); 
@@ -21,10 +18,10 @@ app.get('/', (req, res) => {
 
 // create MYSQL connection 
 const db = mysql.createConnection({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "car",
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "car",
 });
 
 // Connect to database
@@ -88,7 +85,7 @@ app.get("/cars", (req, res) => {
     if (err) return res.json(err);
     
     for (const d of data) {
-      d.img = `${BASE_URL}/images/${d.img}`;
+      d.img = `http://localhost:5001/images/${d.img}`;
     }
     
     res.json(data);
@@ -238,6 +235,6 @@ app.post("/cars", upload.single('image'), (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Backend server running on port ${port}`);
+app.listen(5001, () => {
+  console.log("Backend server running on port 5001");
 });
